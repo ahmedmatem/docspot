@@ -1,12 +1,12 @@
 export type WeekModel = Record<string, string[]>; // {mon: [...], tue: [...], ...}
 
-export type ExclusionType = 'day' | 'time';
+export type ExclusionType = 'day' | 'timeRange';
 
 export interface ScheduleExclusion {
-    type: ExclusionType;
-    date: string;           // yyyy-MM-dd
-    startTime?: string;      // HH:mm
-    endTime?: string;
+    exclusionType: ExclusionType;
+    date: string;     // yyyy-MM-dd
+    start?: string;   // HH:mm
+    end?: string;
     reason?: string;
 }
 

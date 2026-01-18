@@ -5,13 +5,13 @@ import { todayYmd } from '../../../../../core/helpers/date/date.helper';
 import { WeekDayKey, WeekDays } from '../../../data-access/models/week-schedule.model'
 import { DaylySchedulePreviewComponent } from '../tabs/create-week-schedule/dayly-schedule-preview/dayly-schedule-preview.component';
 
-type ExclusionType = 'day' | 'time';
+type ExclusionType = 'day' | 'timeRange';
 
 type PendingExclusion = {
-  type: ExclusionType;
+  exclusionType: ExclusionType;
   date: string;           // yyyy-MM-dd
-  startTime?: string;     // HH:mm (for 'time')
-  endTime?: string;       // HH:mm
+  start?: string;     // HH:mm (for 'time')
+  end?: string;       // HH:mm
   reason?: string;
 };
 
@@ -83,10 +83,10 @@ export class ScheduleExclusionsComponent {
     if (!this.previewSlots().length)
       this.previewTimeExclusion();
     const entry: PendingExclusion = {
-      type: 'time',
+      exclusionType: 'timeRange',
       date: this.slotDate(),
-      startTime: this.slotFrom(),
-      endTime: this.slotTo(),
+      start: this.slotFrom(),
+      end: this.slotTo(),
       reason: this.slotReason().trim() || undefined
     };
     this.pending.update(a => [...a, entry]);
@@ -97,7 +97,7 @@ export class ScheduleExclusionsComponent {
     if (!this.previewDays().length)
       this.previewDayExclusion();
     const items: PendingExclusion[] = this.previewDays().map(d => ({
-      type: 'day',
+      exclusionType: 'day',
       date: d,
       reason: this.dayReason().trim() || undefined
     }));

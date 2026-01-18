@@ -116,8 +116,8 @@
             @for (e of pending(); track $index) {
             <li class="list-group-item d-flex align-items-center">
               <div class="me-auto">
-                @if (e.type === 'time') {
-                <div><strong>{{ e.date }}</strong> · {{ e.startTime }}–{{ e.endTime }}</div>
+                @if (e.exclusionType === 'timeRange') {
+                <div><strong>{{ e.date }}</strong> · {{ e.start }}–{{ e.end }}</div>
                 } @else {
                 <div><strong>{{ e.date }}</strong> · Цял ден</div>
                 }

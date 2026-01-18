@@ -95,7 +95,7 @@ export class WeekSchedulesService {
   }
 
   saveExclusions(exclusionsDto: ExclusionBatchDto) {
-    return this.http.post<void>(`${this.apiUrl}/esclusions`, exclusionsDto).pipe(
+    return this.http.post<void>(`${this.apiUrl}/exclusions`, exclusionsDto).pipe(
       tap(saved => {
 
       })
