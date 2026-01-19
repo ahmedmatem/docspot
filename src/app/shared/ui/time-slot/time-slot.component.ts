@@ -1,7 +1,11 @@
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { Component, computed, input, Input, output, signal } from '@angular/core';
 
-export type Slot = {time: string, available: boolean};
+export type Slot = {
+  time: string, 
+  available: boolean,
+  length: number
+};
 
 @Component({
   selector: 'app-time-slot',
