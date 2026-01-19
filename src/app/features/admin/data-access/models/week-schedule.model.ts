@@ -15,6 +15,12 @@ export interface ExclusionBatchDto {
     exclusions: ScheduleExclusion[];
 }
 
+export interface SlotDto {
+  time: string;     // "HH:mm"
+  length: number;   // minutes
+  available: boolean;
+}
+
 export const WeekDays = [
     { key: 1, label: 'Пон' },
     { key: 2, label: 'Вто' },
