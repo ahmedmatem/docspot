@@ -4,6 +4,7 @@ import { WeekSchedulesService } from '../../../data-access/services/week-schedul
 import { todayYmd } from '../../../../../core/helpers/date/date.helper';
 import { WeekDayKey, WeekDays } from '../../../data-access/models/week-schedule.model'
 import { DaylySchedulePreviewComponent } from '../tabs/create-week-schedule/dayly-schedule-preview/dayly-schedule-preview.component';
+import { ExclusionsSidebarComponent } from "./exclusions-sidebar/exclusions-sidebar.component";
 
 type ExclusionType = 'day' | 'timeRange';
 
@@ -17,7 +18,7 @@ type PendingExclusion = {
 
 @Component({
   selector: 'app-schedule-exclude',
-  imports: [DaylySchedulePreviewComponent],
+  imports: [ExclusionsSidebarComponent],
   templateUrl: './schedule-exclusions.component.html',
   styleUrl: './schedule-exclusions.component.css'
 })

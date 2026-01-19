@@ -144,8 +144,10 @@
         <div class="card-header fw-semibold">Преглед за избрания ден</div>
         <div class="card-body">
           <!-- Пример: покажи дневните слотове с маркирани изключени -->
-          <app-dayly-schedule-preview [intervals]="dayIntervalsForPreview()" [slotLengthMinutes]="slotLengthMinutes">
-          </app-dayly-schedule-preview>
+          <!-- <app-dayly-schedule-preview [intervals]="dayIntervalsForPreview()" [slotLengthMinutes]="slotLengthMinutes">
+          </app-dayly-schedule-preview> -->
+
+          <app-exclusions-sidebar [pending]="pending()"></app-exclusions-sidebar>
 
           <div class="small text-muted mt-2">
             * Изключените слотове ще бъдат недостъпни за запис.

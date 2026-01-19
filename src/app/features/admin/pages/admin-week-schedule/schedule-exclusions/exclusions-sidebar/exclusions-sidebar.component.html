@@ -1,1 +1,87 @@
-<p>exclusions-sidebar works!</p>
+<!-- exclude-sidebar.component.html -->
+<div class="card">
+    <div class="card-header fw-semibold d-flex align-items-center">
+        Преглед на изключвания
+        <div class="ms-auto d-flex gap-2">
+            <input class="form-control form-control-sm" type="date" [value]="from()"
+                (change)="from.set(($any($event.target).value))">
+            <input class="form-control form-control-sm" type="date" [value]="to()"
+                (change)="to.set(($any($event.target).value))">
+            <button class="btn btn-sm btn-outline-primary" (click)="loadList()" [disabled]="loading()">Обнови</button>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        @if (loading()) {
+        <div class="p-3 text-muted">Зареждане…</div>
+        } @else if (!items().length) {
+        <div class="p-3 text-muted">Няма изключвания в периода.</div>
+        } @else {
+        <div class="accordion" id="exclAccordion">
+            @for (e of items(); track e.id) {
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" [class.collapsed]="selectedId() !== e.id"
+                        (click)="select(e.id!)">
+                        <span class="me-2 badge" [class.text-bg-danger]="e.exclusionType==='day'"
+                            [class.text-bg-warning]="e.exclusionType==='timeRange'">
+                            {{ e.exclusionType === 'day' ? 'Без прием' : 'Интервал' }}
+                        </span>
+                        <strong class="me-2">{{ dmy(e.date) }}</strong>
+                        @if (e.exclusionType === 'timeRange' && e.start && e.end) {
+                        <span>{{ e.start }}–{{ e.end }}</span>
+                        }
+                    </button>
+                </h2>
+                <div class="accordion-collapse collapse" [class.show]="selectedId() === e.id">
+                    <div class="accordion-body">
+                        <div class="d-flex align-items-start">
+                            <div class="me-auto">
+                                <div><strong>Дата:</strong> {{ dmy(e.date) }}</div>
+                                <div><strong>Тип:</strong> {{ e.exclusionType === 'day' ? 'Цял ден' : 'Часов интервал'
+                                    }}</div>
+                                @if (e.exclusionType === 'timeRange' && e.start && e.end) {
+                                <div><strong>Часове:</strong> {{ e.start }} – {{ e.end }}</div>
+                                }
+                                @if (e.reason) { <div><strong>Причина:</strong> {{ e.reason }}</div> }
+                            </div>
+                            <div class="ms-2 d-flex flex-column gap-2">
+                                <button class="btn btn-sm btn-outline-danger" [disabled]="deletingId() === e.id"
+                                    (click)="delete(e.id!)">
+                                    @if (deletingId() === e.id) {
+                                    <span class="spinner-border spinner-border-sm me-1"></span>
+                                    }
+                                    <i class="fa-solid fa-trash"></i> Изтрий
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Slots for the selected date -->
+                        <div class="mt-3">
+                            <div class="fw-semibold mb-2">Свободни слотове за {{ dmy(e.date) }}</div>
+                            @if (loadingSlots()) {
+                            <div class="text-muted">Зареждане на слотовете…</div>
+                            } @else if (!slots().length) {
+                            <div class="text-muted">Няма слотове за този ден.</div>
+                            } @else {
+                            <ul class="list-group">
+                                @for (s of slots(); track $index) {
+                                <li class="list-group-item d-flex justify-content-between align-items-center"
+                                    [class.opacity-50]="!s.available || isSlotExcluded(s)">
+                                    <span>{{ s.time }} — {{ (hmToEnd(s.time, s.length)) }}</span>
+                                    @if (!s.available) { <span class="badge text-bg-secondary">Зает</span> }
+                                    @if (isSlotExcluded(s)) { <span class="badge text-bg-danger">Изключен</span> }
+                                </li>
+                                }
+                            </ul>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
