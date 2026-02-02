@@ -91,8 +91,22 @@ export class AdminAppointmentsLayoutComponent {
   }
 
   onDelete(a: AdminAppointmentModel) {
-    // Prototype only (we’ll implement backend + confirmation later)
-    alert('Delete will be implemented later (admin-only).');
+    // alert('Delete will be implemented later (admin-only).');
+    this.loading.set(true);
+    const id = a.id;
+    this.api.delete(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.selected.set(null);
+          this.reload();
+        },
+        error: err => {
+          this.error.set(err?.error?.message ?? 'Грешка при изтриване.');
+          this.loading.set(false);
+        },
+        complete: () => this.loading.set(false)
+      });
   }
 
   private defaultFromTo(){

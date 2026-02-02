@@ -56,17 +56,17 @@
             <div class="col-12 d-flex gap-2">
                 <button class="btn btn-danger w-100" [disabled]="appointment.appointmentStatus === 'CANCELLED'"
                     (click)="cancelClicked()">
-                    Откажи часа
+                    Отмени час
                 </button>
 
                 <button class="btn btn-outline-primary w-100" (click)="reschedule.emit(appointment)">
-                    Премести (по-късно)
+                    Премести час
                 </button>
             </div>
 
             <div class="col-12">
                 <button class="btn btn-outline-danger w-100" (click)="delete.emit(appointment)">
-                    Изтрий (опасно)
+                    Изтрий
                 </button>
             </div>
         </div>
