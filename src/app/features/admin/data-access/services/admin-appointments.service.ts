@@ -8,7 +8,7 @@ import { environment } from "../../../../../environments/environment";
 @Injectable({ providedIn: 'root' })
 export class AdminAppointmentsService {
     private http = inject(HttpClient);
-    private url = `${environment.apiAdminBaseUrl}/appointments`;
+    private baseUrl = `${environment.apiAdminBaseUrl}/appointments`;
 
     getList(query: AdminAppointmentsQuery): Observable<AdminAppointmentModel[]> {
         let params = new HttpParams();
@@ -18,12 +18,18 @@ export class AdminAppointmentsService {
         if (query.q) params = params.set('q', query.q);
         if (query.status && query.status !== 'ALL') params = params.set('status', query.status);
 
-        return this.http.get<AdminAppointmentModel[]>(this.url, { params });
+        return this.http.get<AdminAppointmentModel[]>(this.baseUrl, { params });
     }
 
-    cancel(id: string, reason: string | null) {
-        return this.http.post(`${this.url}/${id}/cancel`, { reason: reason ?? null })
+    cancel(id: string, reason?: string, notifyPatient: boolean = true): Observable<string> {
+        return this.http.post(`${this.baseUrl}/${id}/cancel`, { reason, notifyPatient }, { responseType: 'text' });
     }
 
-    // reschedule(id: string, payload: { newDate: string; newTime: string; reason?: string }) { ... }
+    delete(id: string): Observable<string> {
+        return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
+    }
+
+    reschedule(id: string, newDate: string, newTime: string, reason?: string, notifyPatient = true) {
+        return this.http.post(`${this.baseUrl}/${id}/reschedule`, { newDate, newTime, reason, notifyPatient }, { responseType: 'text' });
+    }
 }

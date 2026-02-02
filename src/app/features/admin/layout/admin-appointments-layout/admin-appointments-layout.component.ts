@@ -70,8 +70,9 @@ export class AdminAppointmentsLayoutComponent {
   }
 
   onCancel(e: { appointment: AdminAppointmentModel; reason?: string }) {
+    this.loading.set(true);
     const id = e.appointment.id;
-    this.api.cancel(id, e.reason ?? null)
+    this.api.cancel(id, e.reason, true)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -79,7 +80,8 @@ export class AdminAppointmentsLayoutComponent {
           this.selected.set(null);
           this.reload();
         },
-        error: err => this.error.set(err?.error?.message ?? 'Грешка при отказ.')
+        error: err => this.error.set(err?.error?.message ?? 'Грешка при отказ.'),
+        complete: () => this.loading.set(false)
       });
   }
 
